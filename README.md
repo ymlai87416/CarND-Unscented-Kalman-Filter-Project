@@ -1,3 +1,32 @@
+[//]: # (Image References)
+
+[image1]: ./output/CTRV_model.png "CTRV model"
+[image2]: ./output/state_vector.PNG "state vector"
+[image3]: ./output/lidar_measurement.PNG "Lidar measurement"
+[image4]: ./output/lidar_init_state.PNG "Lidar initial state"
+[image5]: ./output/lidar_init_covariance_matrix.PNG "Lidar covariance matrix"
+[image6]: ./output/radar_measurement.PNG "Radar measurement"
+[image7]: ./output/radar_init_state.PNG "Radar initial state"
+[image8]: ./output/radar_init_covariance_matrix.PNG "Radar covariance matrix"
+[image9]: ./output/augmented_state_vector.PNG "Augmented state"
+[image10]: ./output/augmented_covariance_matrix.PNG "Augmented convariance matrix"
+[image11]: ./output/yaw_dot_k.PNG "yaw_dot_k"
+[image12]: ./output/sigma_point_prediction_1.PNG "sigma point prediction non zero"
+[image13]: ./output/sigma_point_prediction_2.PNG "sigma_point_prediction zero"
+[image14]: ./output/sigma_point_predicted_mean.PNG "sigma pooint predicted mean"
+[image15]: ./output/sigma_point_predicted_covariance_matrix.PNG "sigma point predicted covariance matrix"
+[image16]: ./output/lidar_measurement.PNG "lidar measurement"
+[image17]: ./output/lidar_measurement_h.PNG "lidar measurement model"
+[image18]: ./output/radar_measurement.PNG "radar measurement"
+[image19]: ./output/radar_measurement_h.PNG "radar measurement model"
+[image20]: ./output/predict_measurement_model.PNG "predicted measurement model"
+[image21]: ./output/predict_covariance.PNG "predicted covariance"
+[image22]: ./output/cross_correlation_matrix.PNG "cross correlation matrix"
+[image23]: ./output/kalman_gain_k.PNG "Kalman gain K"
+[image24]: ./output/update_state.PNG "update state"
+[image25]: ./output/covariance_matrix_update.PNG "covariance matrix update"
+[image26]: ./output/delta_t.PNG "delta_t"
+
 # Unscented Kalman Filter Project Starter Code
 Self-Driving Car Engineer Nanodegree Program
 
@@ -73,20 +102,163 @@ using the following settings:
 
 Please stick to [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html) as much as possible.
 
-## Generating Additional Data
-
-This is optional!
-
-If you'd like to generate your own radar and lidar data, see the
-[utilities repo](https://github.com/udacity/CarND-Mercedes-SF-Utilities) for
-Matlab scripts that can generate additional data.
-
 ## Project Instructions and Rubric
 
 This information is only accessible by people who are already enrolled in Term 2
 of CarND. If you are enrolled, see [the project page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/0949fca6-b379-42af-a919-ee50aa304e6a/lessons/c3eb3583-17b2-4d83-abf7-d852ae1b9fff/concepts/f437b8b0-f2d8-43b0-9662-72ac4e4029c1)
 for instructions and the project rubric.
 
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
+### Compiling
 
+
+### Accuracy
+
+
+### General processing flow
+
+#### CTRV - Constant turn rate velocity model
+The following graph shows the CTRV model, and the corresponding parameters.
+
+![alt text][image1]
+
+The state vector is
+
+![alt text][image2]
+
+
+### Initial measurement
+#### Lidar measurement
+
+Given the measurement vector z:
+
+![alt text][image3]
+
+The initial state is:
+
+![alt text][image4]
+
+The initial covariance matrix is:
+
+![alt text][image5]
+
+#### Radar measurement
+Given the measurement vector z:
+
+![alt text][image6]
+
+The initial state is:
+
+![alt text][image7]
+
+The initial covariance matrix is:
+
+![alt text][image8]
+
+### Predict and update loop
+
+#### UKF augmentation
+
+Augmented state
+
+![alt text][image9]
+
+Augmented covariance matrix
+
+![alt text][image10]
+
+#### Sigma point prediction
+
+Given ![alt text][image26], and sigma points, the UKF predict where will be the sigma points when the time is t + 
+![alt text][image26]
+
+if ![alt text][image11] is not zero:
+
+![alt text][image12] 
+
+if ![alt text][image11] is zero:
+
+![alt text][image13] 
+
+#### Predict mean and covariance
+
+To calculate predicted mean and predicted covariance, we first calculate the weights first.
+The weights are defined as:
+ 
+Predicted mean:
+
+![alt text][image14] 
+
+Predicted covariance:
+
+![alt text][image15] 
+
+#### Measurement model
+
+The measurement model transform state vector back to measurement vector, In this project, the sensor
+fusion filter collects reading from Lidar and Radar.
+
+##### Lidar
+
+The measurement vector is:
+
+![alt text][image16]
+
+The measurement model is:
+
+![alt text][image17] 
+
+
+##### Radar
+
+The measurement vector is:
+
+![alt text][image18]
+
+The measurement model is:
+
+![alt text][image19]
+
+Predicted measurement model
+
+![alt text][image20]
+
+Predicted covariance
+
+![alt text][image21]
+
+#### UKF update
+
+Cross-correlation matrix
+
+![alt text][image22]
+
+Kalman gain K
+
+![alt text][image23]
+
+Update state
+
+![alt text][image24]
+
+Covariance matrix update
+
+![alt text][image25]
+
+### Performance analysis (Combined vs Lidar vs Radar)
+
+
+
+#### Comparison between ground truth and prediction value
+
+#### Lidar only performance
+
+#### Radar only performance
+
+#### Conclusion
+
+### Comparison with the Extended Kalman filter
+
+### Images
+1. Sigma point generation
+    a. What is x, P, Q, vk and the sigma points X
+2. The transformation for C???
