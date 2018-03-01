@@ -122,6 +122,9 @@ private:
 
   ///* normalize radar measurement vector
   VectorXd NormalizeRadarMeasurementVector(VectorXd vector);
+
+  ///* normalize state measurement vector
+  VectorXd NormalizeStateVector(VectorXd vector);
 };
 
 #endif /* UKF_H */
