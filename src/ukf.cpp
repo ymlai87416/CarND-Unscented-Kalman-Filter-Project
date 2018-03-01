@@ -25,7 +25,7 @@ UKF::UKF() {
   P_ = MatrixXd(5, 5);
 
   // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = 3;
+  std_a_ = 6;
 
   // Process noise standard deviation yaw acceleration in rad/s^2
   std_yawdd_ = 1;
@@ -80,6 +80,16 @@ UKF::UKF() {
 
   Xsig_pred_ = MatrixXd(n_x_, 2*n_aug_+1);
 
+  nis_laser_.open( "./NISvals_laser.txt", ios::out );
+  nis_radar_.open( "./NISvals_radar.txt", ios::out );
+
+  if (!nis_laser_.is_open()){
+    cout << "Failed to open NISvals_laser.txt." <<endl;
+  }
+
+  if (!nis_radar_.is_open()){
+    cout << "Failed to open NISvals_radar.txt." <<endl;
+  }
 }
 
 UKF::~UKF() {}
@@ -273,7 +283,7 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
   You'll also need to calculate the lidar NIS.
   */
 
-  MatrixXd Zsig_laser_, S_laser_, T_laser_, K_laser_, NIS_laser_;
+  MatrixXd Zsig_laser_, S_laser_, T_laser_, K_laser_;
   VectorXd z_pred_laser_;
 
   Zsig_laser_ = MatrixXd(n_laser_, 2*n_aug_ + 1);
@@ -332,7 +342,9 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
   std::cout << "K " << K_laser_ << std::endl;
    */
 
-  NIS_laser_ = deltaz_laser_.transpose()*S_laser_.inverse()*deltaz_laser_;
+  double nis = deltaz_laser_.transpose()*S_laser_.inverse()*deltaz_laser_;
+
+  nis_laser_ << nis << endl;
 }
 
 /**
@@ -348,7 +360,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 
   You'll also need to calculate the radar NIS.
   */
-  MatrixXd Zsig_radar_, S_radar_, T_radar_, K_radar_, NIS_radar_;
+  MatrixXd Zsig_radar_, S_radar_, T_radar_, K_radar_;
   VectorXd z_pred_radar_;
 
   Zsig_radar_ = MatrixXd(n_radar_, 2*n_aug_ + 1);
@@ -430,7 +442,9 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   // Uncomment the following to print normalized innovation squared (NIS_radar_),
   // so that it can be plotted and serve as a consistency check on
   // our choice of process noise values
-  NIS_radar_ = deltaz_radar_.transpose()*S_radar_.inverse()*deltaz_radar_;
+  double nis = deltaz_radar_.transpose()*S_radar_.inverse()*deltaz_radar_;
+
+  nis_radar_ << nis << endl;
 }
 
 VectorXd UKF::NormalizeRadarMeasurementVector(VectorXd vector)

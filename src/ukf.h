@@ -125,6 +125,11 @@ private:
 
   ///* normalize state measurement vector
   VectorXd NormalizeStateVector(VectorXd vector);
+
+  ///* logging nis data
+  std::ofstream nis_laser_;
+
+  std::ofstream nis_radar_;
 };
 
 #endif /* UKF_H */
