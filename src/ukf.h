@@ -102,6 +102,26 @@ public:
    * @param meas_package The measurement at k+1
    */
   void UpdateRadar(MeasurementPackage meas_package);
+
+private:
+
+  ///* Radar measurement dimension
+  int n_radar_;
+
+  ///* Laser measurement dimension
+  int n_laser_;
+
+  ///* Previous timestamp
+  long previous_timestamp_;
+
+  ///* Laser measurement noise covariance
+  MatrixXd R_laser_;
+
+  ///* Radar measurement noise covariance
+  MatrixXd R_radar_;
+
+  ///* normalize radar measurement vector
+  VectorXd NormalizeRadarMeasurementVector(VectorXd vector);
 };
 
 #endif /* UKF_H */

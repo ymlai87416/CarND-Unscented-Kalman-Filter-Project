@@ -26,6 +26,7 @@
 [image24]: ./output/update_state.PNG "update state"
 [image25]: ./output/covariance_matrix_update.PNG "covariance matrix update"
 [image26]: ./output/delta_t.PNG "delta_t"
+[image27]: ./output/generating_sigma_points.PNG "generating sigma points"
 
 # Unscented Kalman Filter Project Starter Code
 Self-Driving Car Engineer Nanodegree Program
@@ -110,6 +111,7 @@ for instructions and the project rubric.
 
 ### Compiling
 
+Refer to the instruction in section "Basic Build Instructions" to compile the code and run.
 
 ### Accuracy
 
@@ -165,6 +167,11 @@ Augmented state
 Augmented covariance matrix
 
 ![alt text][image10]
+
+#### Generating Sigma points
+The internal state x and P are padded with non-linear noise, and generate 15 sigma points by the following equation. 
+
+![alt text][image27]
 
 #### Sigma point prediction
 
