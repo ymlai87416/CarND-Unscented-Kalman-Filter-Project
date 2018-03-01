@@ -387,4 +387,6 @@ VectorXd NormalizeRadarMeasurementVector(VectorXd vector)
 {
   while( vector(1)> M_PI ) vector(1)-=2.*M_PI;
   while( vector(1)<-M_PI ) vector(1)+=2.*M_PI;
+
+  return vector;
 }
