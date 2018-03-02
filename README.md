@@ -161,11 +161,11 @@ Refer to the instruction in section "Basic Build Instructions" to compile the co
 
 ### Accuracy
 
-| Data set 1           | Data set 2   |
+| Dataset 1           | Dataset 2   |
 |:-----:| :-----:|
 | ![alt text][image48] | ![alt text][image49] |
 
-UKF tracks the car position, velocity and yaw pretty well. For yaw dot (turn rate), the predictions are not that 
+UKF tracks the vehicle position, velocity and yaw pretty well. For yaw dot (turn rate), the predictions are not that 
 accurate as others.
 
 ![alt text][image51]
@@ -173,8 +173,8 @@ accurate as others.
 ### General processing flow
 
 #### CTRV - Constant turn rate velocity model
-CTRV model assumes that the car is driving at a constant turn rate ![alt text][image63], ![alt text][image62] is the angle of the steering angle. ![alt text][image60] and ![alt text][image61] 
-are the position of the car and v is the linear velocity along the steering direction.
+CTRV model assumes that the vehicle is driving at a constant turn rate ![alt text][image63], ![alt text][image62] is the angle of the steering angle. ![alt text][image60] and ![alt text][image61] 
+are the position of the vehicle and v is the linear velocity along the steering direction.
 
 The following graph describes the parameters in the CTRV model.
 
@@ -204,7 +204,7 @@ The initial covariance matrix is:
 
 #### Radar measurement
 
-Radar is capable of measuring the position of the polar coordinate and the velocity aways from the radar of the vehicle.
+Radar is capable of measuring the position of the polar coordinate and the velocity away from the radar of the vehicle.
 
 Given the measurement vector z:
 
@@ -220,7 +220,7 @@ The initial covariance matrix is:
 
 ### Predict and update loop
 
-UKF consists of a loop which predicts the state of the vehicle and update the state using the sensor measurements.
+UKF consists of a loop which predicts the state of the vehicle and updates the state using the sensor measurements.
 
 #### UKF augmentation
 
@@ -235,7 +235,7 @@ Augmented covariance matrix
 ![alt text][image10]
 
 #### Generating Sigma points
-After the augmentation, UKF generate s15 sigma points by the following equation. 
+After the augmentation, UKF generates 15 sigma points by the following equation. 
 
 ![alt text][image27]
 
@@ -275,7 +275,7 @@ and covariance matrix.
 
 #### Measurement model
 
-The measurement model transform state vector back to measurement vector, In this project, the sensor
+The measurement model transforms state vector back to measurement vector, In this project, the sensor
 fusion algorithm collects reading from both lidar and radar.
 
 ##### Lidar
@@ -333,15 +333,15 @@ Here ![alt text][image53] are the final result of the predict and update loop.
 
 | Values        | Both           |Lidar   |
 | ----- |:-----:| :-----:|
-| Data set 1      | ![alt text][image48] | ![alt text][image44] |
-| Data set 2      | ![alt text][image49] |   ![alt text][image46] |
+| Dataset 1      | ![alt text][image48] | ![alt text][image44] |
+| Dataset 2      | ![alt text][image49] |   ![alt text][image46] |
 
 #### Radar only performance
 
 | Values        | Both           |Radar   |
 | ----- |:-----:| :-----:|
-| Data set 1      | ![alt text][image48] | ![alt text][image45] |
-| Data set 2      | ![alt text][image49] |   ![alt text][image47] |
+| Dataset 1      | ![alt text][image48] | ![alt text][image45] |
+| Dataset 2      | ![alt text][image49] |   ![alt text][image47] |
 
 
 #### Conclusion
@@ -350,7 +350,7 @@ Using both lidar and radar measurements helps reduce the overall RMSE in both ca
 ### Process Noise and Measurement Noise
 There are 2 kinds of noise which are considered when creating the UKF. They are process noise and measurement noise.
 
-Measurement noises are easy to find because they can be found on the manual of the lidar and radar.
+Measurement noises are easy to find because they can be found in the manual of the lidar and radar.
 In this project, lidar has the following measurement noises:
 
 | Measurement        | Noise           |
@@ -371,12 +371,12 @@ To find out the linear acceleration, by statistics, we assume that the max accel
 we assume the noise of linear acceleration equals to sqrt(9) * 2 = 6 ![alt text][image54]
 For yaw acceleration, as I have no relevant data on my hand, I assume it to be 1 ![alt text][image55].
 
-To find out if I make the correct guess of these noise parameters, I make use of the tool called Noise Inovation Squared (NIS).
+To find out if I make the correct guess of these noise parameters, I make use of the tool called Noise Innovation Squared (NIS).
 NIS is calculated as followed:
 
 ![alt text][image50]
 
-I also have tried different set of value for the process noise.
+I also have tried different sets of value for the process noise.
 
 | Values        | Lidar           | Radar  |
 | ------------- |:-------------:| :-----:|
@@ -390,15 +390,15 @@ I also have tried different set of value for the process noise.
 | ![alt text][image57]     | 2.81%      |  2.81%  |
 | ![alt text][image58] | 0.80%      |  1.61%  |
 
-All the charts look good, and does not show that I have overestimate and underestimate too much for both
-process noise parameters. I further looked into the percentage of data points which has value larger than
-95 percentile of the expected chi square distribution, I found that ![alt text][image57] is a good set of parameters and 
-this set of value also give a satisfactory low level of RMSE for car position and velocity predictions. 
+All the charts look good and does not show that I overestimate and underestimate too much for both
+process noise parameters. I further looked into the percentage of data points which has the NIS value larger than
+95 percentile of the expected chi-square distribution, I found that ![alt text][image57] is a good set of parameters and 
+this set of value also give a satisfactory low level of RMSE for vehicle position and velocity predictions. 
 
 
 ### Comparison with the Extended Kalman filter
 Here, we compare EKF (Constant Velocity) against UKF (Constant Turn Rate Velocity) by showing how good both sensor fusion algorithms
-tracks the car position and velocity.
+track the vehicle position and velocity.
 
 | UKF           | EKF  |
 |:-------------:| :-----:|
@@ -412,3 +412,7 @@ tracking the velocity of the vehicle, the prediction of UKF is closer to the gro
 seems lagging behind the ground truth.
 
 Compare to the RMSE given by both sensor fusion algorithm and the above charts, UKF is a better choice in tracking vehicle compares to EKF.
+
+### Bonus challenge
+
+I have also complete the "Catch the Run Away Car with UKF" bonus challenge, please refer to [here](https://github.com/ymlai87416/CarND-Catch-Run-Away-Car-UKF)
