@@ -12,14 +12,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f4b2f16c-d90d-4c5d-940b-746fe1d52346" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change beforePath="$PROJECT_DIR$/output/NIS_laser_na_30_ny_30.png" afterPath="$PROJECT_DIR$/output/NIS_laser_na_30_ny_30.png" />
-      <change beforePath="$PROJECT_DIR$/output/NIS_laser_na_3_ny_1.png" afterPath="$PROJECT_DIR$/output/NIS_laser_na_3_ny_1.png" />
-      <change beforePath="$PROJECT_DIR$/output/NIS_laser_na_6_ny_1.png" afterPath="$PROJECT_DIR$/output/NIS_laser_na_6_ny_1.png" />
-      <change beforePath="$PROJECT_DIR$/output/NIS_radar_na_30_ny_30.png" afterPath="$PROJECT_DIR$/output/NIS_radar_na_30_ny_30.png" />
-      <change beforePath="$PROJECT_DIR$/output/NIS_radar_na_3_ny_1.png" afterPath="$PROJECT_DIR$/output/NIS_radar_na_3_ny_1.png" />
-      <change beforePath="$PROJECT_DIR$/output/NIS_radar_na_6_ny_1.png" afterPath="$PROJECT_DIR$/output/NIS_radar_na_6_ny_1.png" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -58,8 +51,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="420">
-                <caret line="76" column="33" lean-forward="false" selection-start-line="76" selection-start-column="33" selection-end-line="76" selection-end-column="33" />
+              <first_editor relative-caret-position="343">
+                <caret line="207" column="0" lean-forward="true" selection-start-line="207" selection-start-column="0" selection-end-line="207" selection-end-column="0" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -213,7 +206,7 @@
       <workItem from="1519910868597" duration="9368000" />
       <workItem from="1520016327165" duration="790000" />
       <workItem from="1519989122541" duration="4437000" />
-      <workItem from="1520026304018" duration="3057000" />
+      <workItem from="1520026304018" duration="3344000" />
     </task>
     <task id="LOCAL-00001" summary="complete the code, NIS not yet.">
       <created>1519916864344</created>
@@ -233,7 +226,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31537000" />
+    <option name="totallyTimeSpent" value="31824000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -616,8 +609,8 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="420">
-            <caret line="76" column="33" lean-forward="false" selection-start-line="76" selection-start-column="33" selection-end-line="76" selection-end-column="33" />
+          <first_editor relative-caret-position="343">
+            <caret line="207" column="0" lean-forward="true" selection-start-line="207" selection-start-column="0" selection-end-line="207" selection-end-column="0" />
             <folding />
           </first_editor>
           <second_editor />

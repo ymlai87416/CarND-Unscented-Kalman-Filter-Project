@@ -161,7 +161,9 @@ Refer to the instruction in section "Basic Build Instructions" to compile the co
 
 ### Accuracy
 
-***** 
+| Data set 1           | Data set 2   |
+|:-----:| :-----:|
+| ![alt text][image48] | ![alt text][image49] |
 
 UKF tracks the car position, velocity and yaw pretty well. For yaw dot (turn rate), the predictions are not that 
 accurate as others.
@@ -202,7 +204,8 @@ The initial covariance matrix is:
 
 #### Radar measurement
 
-Radar is capable of measuring the position of the polar coordinate and the velocity aways from the radar of the vehicle .
+Radar is capable of measuring the position of the polar coordinate and the velocity aways from the radar of the vehicle.
+
 Given the measurement vector z:
 
 ![alt text][image6]
@@ -334,7 +337,6 @@ Here ![alt text][image53] are the final result of the predict and update loop.
 | Data set 2      | ![alt text][image49] |   ![alt text][image46] |
 
 #### Radar only performance
-For dataset 1, here is the comparison between using both lidar and radar and only radar.
 
 | Values        | Both           |Radar   |
 | ----- |:-----:| :-----:|
