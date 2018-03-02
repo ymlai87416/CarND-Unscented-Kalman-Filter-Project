@@ -28,6 +28,33 @@
 [image26]: ./output/delta_t.PNG "delta_t"
 [image27]: ./output/generating_sigma_points.PNG "generating sigma points"
 
+[image28]: ./output/NIS_laser_na_3_ny_1.png "NIS laser low"
+[image29]: ./output/NIS_laser_na_6_ny_1.png "NIS laser normal"
+[image30]: ./output/NIS_laser_na_30_ny_30.png "NIS laser high"
+[image31]: ./output/NIS_radar_na_3_ny_1.png "NIS radar low"
+[image32]: ./output/NIS_radar_na_6_ny_1.png "NIS radar normal"
+[image33]: ./output/NIS_radar_na_30_ny_30.png "NIS radar high"
+
+[image34]: ./output/ukf_px_comparison.png "UKF Px"
+[image35]: ./output/ukf_py_comparison.png "UKF Py"
+[image36]: ./output/ukf_vx_comparison.png "UKF Vx"
+[image37]: ./output/ukf_vy_comparison.png "UKF Vy"
+[image38]: ./output/ukf_yaw_comparison.png "UKF yaw"
+[image39]: ./output/ukf_yaw_dot_comparison.png "UKF yaw dot"
+[image40]: ./output/ekf_px_comparison.png "EKF Px"
+[image41]: ./output/ekf_py_comparison.png "EKF Py"
+[image42]: ./output/ekf_vx_comparison.png "EKF Vx"
+[image43]: ./output/ekf_vy_comparison.png "EKF Vy"
+
+[image44]: ./output/data_set_1_laser_acc.png "dataset 1 laser"
+[image45]: ./output/data_set_1_radar_acc.png "dataset 1 radar"
+[image46]: ./output/data_set_2_laser_acc.png "dataset 2 laser"
+[image47]: ./output/data_set_2_radar_acc.png "dataset 2 radar"
+[image48]: ./output/data_set_1_acc.png "dataset 1"
+[image49]: ./output/data_set_2_acc.png "dataset 2"
+
+[image50]: ./output/nis_eq.png "nis equation"
+
 # Unscented Kalman Filter Project Starter Code
 Self-Driving Car Engineer Nanodegree Program
 
@@ -253,19 +280,101 @@ Covariance matrix update
 
 ### Performance analysis (Combined vs Lidar vs Radar)
 
-
-
 #### Comparison between ground truth and prediction value
+
+UKF track the car position, velocity and yaw pretty well as you can see, while for yaw dot, the prediction is not that 
+accurate.
+
+![alt text][image34]
+![alt text][image35]
+
+![alt text][image36]
+![alt text][image37]
+
+![alt text][image38]
+![alt text][image39]
 
 #### Lidar only performance
 
+| Values        | Both           |Lidar   |
+| ----- |:-----:| :-----:|
+| Data set 1      | ![alt text][image48] | ![alt text][image44] |
+| Data set 2      | ![alt text][image49] |   ![alt text][image46] |
+
 #### Radar only performance
+For dataset 1, here is the comparison between using both lidar and radar and only radar.
+
+| Values        | Both           |Radar   |
+| ----- |:-----:| :-----:|
+| Data set 1      | ![alt text][image48] | ![alt text][image45] |
+| Data set 2      | ![alt text][image49] |   ![alt text][image47] |
+
 
 #### Conclusion
+Using both lidar and radar help reduce the RMSE overall in both cases.
+
+### Process Noise and Measurement Noise
+There are 2 kinds of noise which are factored in when creating the UKF. They are process noise and measurement noise.
+
+Measurement noises are easy to find out because they can be found on the manual of the lidar and radar fact sheet.
+In this project, lidar has the following measurement noises:
+
+| Measurement        | Noise           |
+| ------------- |:-------------:|
+| position in x-axis      | 0.15 |
+| position in y-axis      | 0.15      |
+
+Measurement noises from radar are:
+
+| Measurement        | Noise           |
+| ------------- |:-------------:|
+| polar coordinate - radius      | 0.3 |
+| polar coordinate - angle      | 0.03      |
+| velocity | 0.3     |
+
+Process noises in this project are linear acceleration and yaw acceleration.
+To find out the linear acceleration, by statistics, we assume that the max acceleration is 9m/s2.
+we take the noise from linear acceleration as sqrt(9) * 2 = 6m/s2
+For yaw acceleration, as I have no data on my hand, I assume it to be 1rad/s2.
+
+To find out if I make the correct guess of these noise parameters, I make use of the tool called Noise Inovation Squared (NIS).
+NIS is calculated as followed:
+
+![alt text][image50]
+
+I also have tried different set of value for the process noise.
+
+| Values        | Lidar           | Radar  |
+| ------------- |:-------------:| -----:|
+| n_a=3, n_yawdd=1      | ![alt text][image28] | ![alt text][image31] |
+| n_a=6, n_yawdd=1      | ![alt text][image29]      |   ![alt text][image32] |
+| n_a=30, n_yawdd=30 | ![alt text][image30]      |    ![alt text][image33] |
+
+| % of data points > X(dof, 0.05)        | Lidar (dof=2)          | Radar (dof=3) |
+| ------------- |:-------------:| -----:|
+| n_a=3, n_yawdd=1      | 2.81% | 3.61% |
+| n_a=6, n_yawdd=1      | 2.81%      |  2.81%  |
+| n_a=30, n_yawdd=30 | 0.80%      |  1.61%  |
+
+All the charts look good, and does not show that I have overestimate and underestimate too much for both
+process noise parameters. I further looked into the percentage of data points which has value larger than
+95 percentile of the expected chi square distribution, I found that n_a=6 and n_yawdd=1 is a good set of parameters and 
+this set of value also give a satisfactory low level of RMSE for car position and velocity predictions. 
+
 
 ### Comparison with the Extended Kalman filter
+Here, we only compare EKF (Constant Velocity) against UKF (Constant Turn Rate Velocity) by showing how good both fusion sensors
+track the car position and velocity.
 
-### Images
-1. Sigma point generation
-    a. What is x, P, Q, vk and the sigma points X
-2. The transformation for C???
+| UKF           | EKF  |
+|:-------------:| -----:|
+| ![alt text][image34] | ![alt text][image40] |
+| ![alt text][image35]      |   ![alt text][image41] |
+| ![alt text][image36]      |    ![alt text][image42] |
+| ![alt text][image37]      |    ![alt text][image43] |
+
+From the above charts, we can see that both fusion sensors do good in tracking vehicle position, when it comes to 
+tracking the velocity of the vehicle, the prediction of UKF is more close to the ground truth, and the curve given by EKF
+seems lagging behind the ground truth.
+
+Compare to the RMSE given by both sensor fusion algorithm and the above charts, UKF is a better choice in tracking vehicle than EKF.
