@@ -54,6 +54,7 @@
 [image49]: ./output/data_set_2_acc.png "dataset 2"
 
 [image50]: ./output/nis_eq.PNG "nis equation"
+[image51]: ./output/ukf_performance.png "ukf performance"
 
 # Unscented Kalman Filter Project Starter Code
 Self-Driving Car Engineer Nanodegree Program
@@ -285,14 +286,7 @@ Covariance matrix update
 UKF track the car position, velocity and yaw pretty well as you can see, while for yaw dot, the prediction is not that 
 accurate.
 
-![alt text][image34]
-![alt text][image35]
-
-![alt text][image36]
-![alt text][image37]
-
-![alt text][image38]
-![alt text][image39]
+![alt text][image51]
 
 #### Lidar only performance
 
