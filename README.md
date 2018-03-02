@@ -53,7 +53,7 @@
 [image48]: ./output/data_set_1_acc.png "dataset 1"
 [image49]: ./output/data_set_2_acc.png "dataset 2"
 
-[image50]: ./output/nis_eq.png "nis equation"
+[image50]: ./output/nis_eq.PNG "nis equation"
 
 # Unscented Kalman Filter Project Starter Code
 Self-Driving Car Engineer Nanodegree Program
