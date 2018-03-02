@@ -150,12 +150,12 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
   if( dt > 0.0001 )
     Prediction( dt );
 
-  if( meas_package.sensor_type_ == MeasurementPackage::RADAR )
+  if( meas_package.sensor_type_ == MeasurementPackage::RADAR && use_radar_)
   {
     // Radar update
     UpdateRadar( meas_package );
   }
-  else
+  else if(meas_package.sensor_type_ == MeasurementPackage::LASER && use_laser_)
   {
     // Laser update
     UpdateLidar( meas_package );

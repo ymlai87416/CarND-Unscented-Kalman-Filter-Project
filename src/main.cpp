@@ -60,74 +60,75 @@ int main()
           
           MeasurementPackage meas_package;
           istringstream iss(sensor_measurment);
-    	  long long timestamp;
+          long long timestamp;
 
-    	  // reads first element from the current line
-    	  string sensor_type;
-    	  iss >> sensor_type;
+          // reads first element from the current line
+          string sensor_type;
+          iss >> sensor_type;
 
-    	  if (sensor_type.compare("L") == 0) {
-      	  		meas_package.sensor_type_ = MeasurementPackage::LASER;
-          		meas_package.raw_measurements_ = VectorXd(2);
-          		float px;
-      	  		float py;
-          		iss >> px;
-          		iss >> py;
-          		meas_package.raw_measurements_ << px, py;
-          		iss >> timestamp;
-          		meas_package.timestamp_ = timestamp;
+          if (sensor_type.compare("L") == 0) {
+                meas_package.sensor_type_ = MeasurementPackage::LASER;
+                meas_package.raw_measurements_ = VectorXd(2);
+                float px;
+                float py;
+                iss >> px;
+                iss >> py;
+                meas_package.raw_measurements_ << px, py;
+                iss >> timestamp;
+                meas_package.timestamp_ = timestamp;
           } else if (sensor_type.compare("R") == 0) {
 
-      	  		meas_package.sensor_type_ = MeasurementPackage::RADAR;
-          		meas_package.raw_measurements_ = VectorXd(3);
-          		float ro;
-      	  		float theta;
-      	  		float ro_dot;
-          		iss >> ro;
-          		iss >> theta;
-          		iss >> ro_dot;
-          		meas_package.raw_measurements_ << ro,theta, ro_dot;
-          		iss >> timestamp;
-          		meas_package.timestamp_ = timestamp;
+              meas_package.sensor_type_ = MeasurementPackage::RADAR;
+              meas_package.raw_measurements_ = VectorXd(3);
+              float ro;
+              float theta;
+              float ro_dot;
+              iss >> ro;
+              iss >> theta;
+              iss >> ro_dot;
+              meas_package.raw_measurements_ << ro,theta, ro_dot;
+              iss >> timestamp;
+              meas_package.timestamp_ = timestamp;
           }
           float x_gt;
-    	  float y_gt;
-    	  float vx_gt;
-    	  float vy_gt;
-    	  iss >> x_gt;
-    	  iss >> y_gt;
-    	  iss >> vx_gt;
-    	  iss >> vy_gt;
-    	  VectorXd gt_values(4);
-    	  gt_values(0) = x_gt;
-    	  gt_values(1) = y_gt; 
-    	  gt_values(2) = vx_gt;
-    	  gt_values(3) = vy_gt;
-    	  ground_truth.push_back(gt_values);
-          
-          //Call ProcessMeasurment(meas_package) for Kalman filter
-    	  ukf.ProcessMeasurement(meas_package);    	  
+          float y_gt;
+          float vx_gt;
+          float vy_gt;
+          iss >> x_gt;
+          iss >> y_gt;
+          iss >> vx_gt;
+          iss >> vy_gt;
+          VectorXd gt_values(4);
+          gt_values(0) = x_gt;
+          gt_values(1) = y_gt;
+          gt_values(2) = vx_gt;
+          gt_values(3) = vy_gt;
+          ground_truth.push_back(gt_values);
 
-    	  //Push the current estimated x,y positon from the Kalman filter's state vector
+            //Call ProcessMeasurment(meas_package) for Kalman filter
+          ukf.ProcessMeasurement(meas_package);
 
-    	  VectorXd estimate(4);
+          //Push the current estimated x,y positon from the Kalman filter's state vector
 
-    	  double p_x = ukf.x_(0);
-    	  double p_y = ukf.x_(1);
-    	  double v  = ukf.x_(2);
-    	  double yaw = ukf.x_(3);
+          VectorXd estimate(4);
 
-    	  double v1 = cos(yaw)*v;
-    	  double v2 = sin(yaw)*v;
+          double p_x = ukf.x_(0);
+          double p_y = ukf.x_(1);
+          double v  = ukf.x_(2);
+          double yaw = ukf.x_(3);
+          double yawd = ukf.x_(4);
 
-    	  estimate(0) = p_x;
-    	  estimate(1) = p_y;
-    	  estimate(2) = v1;
-    	  estimate(3) = v2;
-    	  
-    	  estimations.push_back(estimate);
+          double v1 = cos(yaw)*v;
+          double v2 = sin(yaw)*v;
 
-    	  VectorXd RMSE = tools.CalculateRMSE(estimations, ground_truth);
+          estimate(0) = p_x;
+          estimate(1) = p_y;
+          estimate(2) = v1;
+          estimate(3) = v2;
+
+          estimations.push_back(estimate);
+
+          VectorXd RMSE = tools.CalculateRMSE(estimations, ground_truth);
 
           json msgJson;
           msgJson["estimate_x"] = p_x;
@@ -138,9 +139,9 @@ int main()
           msgJson["rmse_vy"] = RMSE(3);
           auto msg = "42[\"estimate_marker\"," + msgJson.dump() + "]";
           //std::cout << msg << std::endl;
-          //std::cout << p_x << "," << p_y << "," << v1 << "," << v2 << "," << yaw << "," << RMSE(0) << "," << RMSE(1) << "," << RMSE(2) << "," << RMSE(0) << std::endl;
+          //std::cout << p_x << "," << p_y << "," << v1 << "," << v2 << "," << yaw << "," << yawd << "," << RMSE(0) << "," << RMSE(1) << "," << RMSE(2) << "," << RMSE(0) << std::endl;
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
-	  
+
         }
       } else {
         
