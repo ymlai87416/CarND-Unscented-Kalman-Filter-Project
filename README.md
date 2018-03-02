@@ -56,7 +56,25 @@
 [image50]: ./output/nis_eq.PNG "nis equation"
 [image51]: ./output/ukf_performance.png "ukf performance"
 
-# Unscented Kalman Filter Project Starter Code
+[image52]: ./output/sigma_point_weight.PNG "ukf sigma points weightings"
+
+[image53]: ./output/symbols/posterior_result.png "posterior_result"
+[image54]: ./output/symbols/ms2.PNG "ms2"
+[image55]: ./output/symbols/rads2.PNG "rads2"
+
+[image56]: ./output/symbols/small_process_noise.PNG "small"
+[image57]: ./output/symbols/normal_process_noise.PNG "normal"
+[image58]: ./output/symbols/high_process_noise.PNG "high"
+
+[image59]: ./output/symbols/chi_square.PNG "chi square"
+
+[image60]: ./output/symbols/px.png "px"
+[image61]: ./output/symbols/py.png "py"
+[image62]: ./output/symbols/yaw.png "yaw"
+[image63]: ./output/symbols/yaw_dot.png "yaw dot"
+
+
+# Unscented Kalman Filter Project
 Self-Driving Car Engineer Nanodegree Program
 
 In this project utilize an Unscented Kalman Filter to estimate the state of a moving object of interest with noisy lidar and radar measurements. Passing the project requires obtaining RMSE values that are lower that the tolerance outlined in the project rubric. 
@@ -143,11 +161,20 @@ Refer to the instruction in section "Basic Build Instructions" to compile the co
 
 ### Accuracy
 
+***** 
+
+UKF tracks the car position, velocity and yaw pretty well. For yaw dot (turn rate), the predictions are not that 
+accurate as others.
+
+![alt text][image51]
 
 ### General processing flow
 
 #### CTRV - Constant turn rate velocity model
-The following graph shows the CTRV model, and the corresponding parameters.
+CTRV model assumes that the car is driving at a constant turn rate ![alt text][image63], ![alt text][image62] is the angle of the steering angle. ![alt text][image60] and ![alt text][image61] 
+are the position of the car and v is the linear velocity along the steering direction.
+
+The following graph describes the parameters in the CTRV model.
 
 ![alt text][image1]
 
@@ -158,6 +185,8 @@ The state vector is
 
 ### Initial measurement
 #### Lidar measurement
+
+Lidar is capable of measuring the position of the vehicle.
 
 Given the measurement vector z:
 
@@ -172,6 +201,8 @@ The initial covariance matrix is:
 ![alt text][image5]
 
 #### Radar measurement
+
+Radar is capable of measuring the position of the polar coordinate and the velocity aways from the radar of the vehicle .
 Given the measurement vector z:
 
 ![alt text][image6]
@@ -186,7 +217,11 @@ The initial covariance matrix is:
 
 ### Predict and update loop
 
+UKF consists of a loop which predicts the state of the vehicle and update the state using the sensor measurements.
+
 #### UKF augmentation
+
+First, UKF augments the state of the vehicle to include the process noise.
 
 Augmented state
 
@@ -197,14 +232,16 @@ Augmented covariance matrix
 ![alt text][image10]
 
 #### Generating Sigma points
-The internal state x and P are padded with non-linear noise, and generate 15 sigma points by the following equation. 
+After the augmentation, UKF generate s15 sigma points by the following equation. 
 
 ![alt text][image27]
 
 #### Sigma point prediction
 
 Given ![alt text][image26], and sigma points, the UKF predict where will be the sigma points when the time is t + 
-![alt text][image26]
+![alt text][image26] using the process model.
+
+Here is the process model:
 
 if ![alt text][image11] is not zero:
 
@@ -216,8 +253,11 @@ if ![alt text][image11] is zero:
 
 #### Predict mean and covariance
 
-To calculate predicted mean and predicted covariance, we first calculate the weights first.
-The weights are defined as:
+To calculate predicted mean and predicted covariance, UKF calculates the weightings first.
+The weightings are calculated as:
+
+
+![alt text][image52] 
  
 Predicted mean:
 
@@ -227,10 +267,13 @@ Predicted covariance:
 
 ![alt text][image15] 
 
+This completes the prediction part. In the next part, UKF uses the sensor measurements to enhance the predicted state 
+and covariance matrix.
+
 #### Measurement model
 
 The measurement model transform state vector back to measurement vector, In this project, the sensor
-fusion filter collects reading from Lidar and Radar.
+fusion algorithm collects reading from both lidar and radar.
 
 ##### Lidar
 
@@ -279,14 +322,9 @@ Covariance matrix update
 
 ![alt text][image25]
 
+Here ![alt text][image53] are the final result of the predict and update loop.
+
 ### Performance analysis (Combined vs Lidar vs Radar)
-
-#### Comparison between ground truth and prediction value
-
-UKF track the car position, velocity and yaw pretty well as you can see, while for yaw dot, the prediction is not that 
-accurate.
-
-![alt text][image51]
 
 #### Lidar only performance
 
@@ -305,12 +343,12 @@ For dataset 1, here is the comparison between using both lidar and radar and onl
 
 
 #### Conclusion
-Using both lidar and radar help reduce the RMSE overall in both cases.
+Using both lidar and radar measurements helps reduce the overall RMSE in both cases.
 
 ### Process Noise and Measurement Noise
-There are 2 kinds of noise which are factored in when creating the UKF. They are process noise and measurement noise.
+There are 2 kinds of noise which are considered when creating the UKF. They are process noise and measurement noise.
 
-Measurement noises are easy to find out because they can be found on the manual of the lidar and radar fact sheet.
+Measurement noises are easy to find because they can be found on the manual of the lidar and radar.
 In this project, lidar has the following measurement noises:
 
 | Measurement        | Noise           |
@@ -326,10 +364,10 @@ Measurement noises from radar are:
 | polar coordinate - angle      | 0.03      |
 | velocity | 0.3     |
 
-Process noises in this project are linear acceleration and yaw acceleration.
-To find out the linear acceleration, by statistics, we assume that the max acceleration is 9m/s2.
-we take the noise from linear acceleration as sqrt(9) * 2 = 6m/s2
-For yaw acceleration, as I have no data on my hand, I assume it to be 1rad/s2.
+Process noises in this project are linear acceleration and yaw acceleration. 
+To find out the linear acceleration, by statistics, we assume that the max acceleration is 9 ![alt text][image54].
+we assume the noise of linear acceleration equals to sqrt(9) * 2 = 6 ![alt text][image54]
+For yaw acceleration, as I have no relevant data on my hand, I assume it to be 1 ![alt text][image55].
 
 To find out if I make the correct guess of these noise parameters, I make use of the tool called Noise Inovation Squared (NIS).
 NIS is calculated as followed:
@@ -339,36 +377,36 @@ NIS is calculated as followed:
 I also have tried different set of value for the process noise.
 
 | Values        | Lidar           | Radar  |
-| ------------- |:-------------:| -----:|
-| n_a=3, n_yawdd=1      | ![alt text][image28] | ![alt text][image31] |
-| n_a=6, n_yawdd=1      | ![alt text][image29]      |   ![alt text][image32] |
-| n_a=30, n_yawdd=30 | ![alt text][image30]      |    ![alt text][image33] |
+| ------------- |:-------------:| :-----:|
+| ![alt text][image56]      | ![alt text][image28] | ![alt text][image31] |
+| ![alt text][image57]      | ![alt text][image29]      |   ![alt text][image32] |
+| ![alt text][image58] | ![alt text][image30]      |    ![alt text][image33] |
 
-| % of data points > X(dof, 0.05)        | Lidar (dof=2)          | Radar (dof=3) |
-| ------------- |:-------------:| -----:|
-| n_a=3, n_yawdd=1      | 2.81% | 3.61% |
-| n_a=6, n_yawdd=1      | 2.81%      |  2.81%  |
-| n_a=30, n_yawdd=30 | 0.80%      |  1.61%  |
+| % of data points > ![alt text][image59]        | Lidar (dof=2)          | Radar (dof=3) |
+| ------------- |:-------------:| :-----:|
+| ![alt text][image56]      | 2.81% | 3.61% |
+| ![alt text][image57]     | 2.81%      |  2.81%  |
+| ![alt text][image58] | 0.80%      |  1.61%  |
 
 All the charts look good, and does not show that I have overestimate and underestimate too much for both
 process noise parameters. I further looked into the percentage of data points which has value larger than
-95 percentile of the expected chi square distribution, I found that n_a=6 and n_yawdd=1 is a good set of parameters and 
+95 percentile of the expected chi square distribution, I found that ![alt text][image57] is a good set of parameters and 
 this set of value also give a satisfactory low level of RMSE for car position and velocity predictions. 
 
 
 ### Comparison with the Extended Kalman filter
-Here, we only compare EKF (Constant Velocity) against UKF (Constant Turn Rate Velocity) by showing how good both fusion sensors
-track the car position and velocity.
+Here, we compare EKF (Constant Velocity) against UKF (Constant Turn Rate Velocity) by showing how good both sensor fusion algorithms
+tracks the car position and velocity.
 
 | UKF           | EKF  |
-|:-------------:| -----:|
+|:-------------:| :-----:|
 | ![alt text][image34] | ![alt text][image40] |
 | ![alt text][image35]      |   ![alt text][image41] |
 | ![alt text][image36]      |    ![alt text][image42] |
 | ![alt text][image37]      |    ![alt text][image43] |
 
-From the above charts, we can see that both fusion sensors do good in tracking vehicle position, when it comes to 
-tracking the velocity of the vehicle, the prediction of UKF is more close to the ground truth, and the curve given by EKF
+From the above charts, we can see that both sensor fusion algorithms perform well in tracking vehicle position, but when it comes to 
+tracking the velocity of the vehicle, the prediction of UKF is closer to the ground truth, and the EKF predictions
 seems lagging behind the ground truth.
 
-Compare to the RMSE given by both sensor fusion algorithm and the above charts, UKF is a better choice in tracking vehicle than EKF.
+Compare to the RMSE given by both sensor fusion algorithm and the above charts, UKF is a better choice in tracking vehicle compares to EKF.
