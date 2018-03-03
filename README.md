@@ -415,6 +415,6 @@ Compare to the RMSE given by both sensor fusion algorithm and the above charts, 
 
 ### Bonus challenge
 
-I have also complete the "Catch the Run Away Car with UKF" bonus challenge, please refer to [here](https://github.com/ymlai87416/CarND-Catch-Run-Away-Car-UKF)
+I have also completed the "Catch the Run Away Car with UKF" bonus challenge, please refer to [here](https://github.com/ymlai87416/CarND-Catch-Run-Away-Car-UKF)
 
 Here is the [result](https://youtu.be/40h_eBTMvLg) .
